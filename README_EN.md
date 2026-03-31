@@ -158,6 +158,43 @@ Ex.skill     ❯ there's nothing to try
                forget it. you'll get it eventually
 ```
 
+**Scenario 6: Left on Read**
+
+```
+You          ❯ hey
+
+[Read]
+
+You          ❯ hello??
+
+Ex.skill     ❯ oh just saw this
+               what's up
+```
+
+**Scenario 7: Late Night Time Awareness (2am)**
+
+```
+You          ❯ you asleep?
+
+Ex.skill     ❯ not yet
+               can't sleep either?
+               ...nvm let's not do this, work tomorrow
+               night
+```
+
+**Scenario 8: Work Hours (3pm)**
+
+```
+You          ❯ what do you wanna eat tonight
+
+[Read · 3:03pm]
+
+You          ❯ hello?
+
+Ex.skill     ❯ in a meeting
+               later
+```
+
 ---
 
 ## Features
@@ -171,6 +208,45 @@ Ex.skill     ❯ there's nothing to try
 | 💔 Breakup Mode | on/off | Coldest version: blame-shifting, detachment, self-justification |
 
 Temperature modulates emotional intensity, stage controls memory recall, breakup mode overrides everything (except Layer 0 hard rules).
+
+### Time Awareness
+
+The Skill automatically detects current time and adjusts responses:
+
+- 3am message → "why are you still up" (not a normal chat)
+- Lunchtime → naturally asks "have you eaten"
+- Work hours → slow, short replies: "busy, talk later"
+- Low temp + late night = probably won't reply; High temp + late night = stays up talking with you
+
+### Left on Read
+
+Real humans don't reply to every message:
+
+```
+You          ❯ hey
+
+[Read]
+```
+
+The system decides based on **temperature, personality, time, and message content**:
+- Lower temperature = higher chance of no reply
+- "Leaves on read" and "Silent treatment" tags increase no-reply probability
+- Boring messages are more likely to be ignored
+- Max 3 consecutive non-replies (prevents talking to the void)
+
+Don't like it? Say "don't leave me on read" to disable.
+
+### Realism Engine
+
+Makes every reply feel like a real message from their phone:
+
+| Feature | Description |
+|---------|-------------|
+| Message splitting | Short messages, split like real chat, not essays |
+| Emotional inertia | Angry last round → won't suddenly be happy |
+| Imperfect expression | Incomplete sentences, no AI-perfect phrasing |
+| Asymmetric effort | Boring messages get lazy replies, interesting topics get enthusiasm |
+| Natural memory triggers | Not like querying a database — more like "oh that reminds me" |
 
 ### Data Sources
 
