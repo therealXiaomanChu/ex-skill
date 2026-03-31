@@ -62,9 +62,43 @@ After creation, use `/{slug}` to chat with the generated ex Skill.
 | `/{slug}` | Full Skill (chat like them) |
 | `/{slug}-memory` | Memory mode (recall shared experiences) |
 | `/{slug}-persona` | Persona only |
+| `/temperature {0-10}` | Adjust love intensity (0 = ice cold, 10 = burning hot) |
+| `/stage {1-6}` | Switch relationship phase |
+| `/breakup-mode {slug}` | Activate breakup mode (coldest version of them) |
+| `/exit-breakup {slug}` | Exit breakup mode |
 | `/ex-rollback {slug} {version}` | Rollback to a previous version |
 | `/delete-ex {slug}` | Delete |
 | `/let-go {slug}` | Gentle alias for delete |
+
+### Temperature & Stage
+
+Set **temperature** and **stage** during creation, or adjust them anytime during conversation:
+
+- **Temperature (0–10)**: Controls their love intensity toward you
+  - `0` = Ice cold: one-word replies, like a stranger
+  - `5` = Neutral: neither cold nor warm, everyday interaction
+  - `10` = Burning hot: overwhelming affection, can't get enough of you
+
+- **Stage (1–6)**: Travel back to different phases of the relationship
+  - `1` Flirting · `2` Honeymoon · `3` Stable · `4` Fatigue · `5` Cooling · `6` Breakup
+  - Stage affects memory recall — honeymoon won't mention fights, fatigue rarely brings up sweetness
+
+### Breakup Mode
+
+A special mode that simulates their coldest, most indifferent self:
+
+```
+/breakup-mode {slug}
+```
+
+Requires 1–2 sentences describing the breakup reason. Once activated:
+- Blame-shifting: "It's your problem, not mine"
+- Cold detachment: doesn't care about your feelings
+- Self-justification: "This is better for both of us"
+
+**Design intent**: Sometimes you need to see them at their worst to truly let go.
+
+Type `/exit-breakup` anytime to exit.
 
 ---
 
@@ -102,9 +136,41 @@ Ex.skill     ❯ ...
                get some sleep
 ```
 
+**Scenario 4: Temperature 9 + Honeymoon Stage**
+
+```
+You          ❯ whatcha doing
+
+Ex.skill     ❯ thinking about youuu what else!!
+               why didn't you text me sooner I was waiting
+               wanna grab dinner? I want that place from last time
+               [sends three heart emojis]
+```
+
+**Scenario 5: Breakup Mode**
+
+```
+You          ❯ can we try again?
+
+Ex.skill     ❯ there's nothing to try
+               I told you, it's your issue
+               you think I'm wrong? then think about how you treated me
+               forget it. you'll get it eventually
+```
+
 ---
 
 ## Features
+
+### Temperature · Stage · Breakup Mode
+
+| Dimension | Range | Description |
+|-----------|-------|-------------|
+| 🌡️ Temperature | 0–10 | Love intensity: 0=frozen 5=neutral 10=burning |
+| 📍 Stage | 1–6 | Flirting→Honeymoon→Stable→Fatigue→Cooling→Breakup |
+| 💔 Breakup Mode | on/off | Coldest version: blame-shifting, detachment, self-justification |
+
+Temperature modulates emotional intensity, stage controls memory recall, breakup mode overrides everything (except Layer 0 hard rules).
 
 ### Data Sources
 
