@@ -1,0 +1,60 @@
+{
+  "module": {
+    "name": "docs",
+    "path": "docs",
+    "purpose": "产品需求文档层，定义前任.skill 的核心概念（两层架构 Part A Memory + Part B Persona）、用户旅程（/create-ex 五步流程）、进化机制（增量分析+merge+纠正）、安全边界（5条硬性规则）、数据源支持矩阵和生成产物文件结构规范，作为所有其他层设计与实现的规范依据。"
+  },
+  "owns": [
+    "定义产品定位：运行在 Claude Code 上的 meta-skill，用于将前任蒸馏为可对话的 AI Persona",
+    "定义两层架构概念：Part A Relationship Memory（事实性记忆）+ Part B Persona（对话行为驱动）",
+    "定义运行逻辑流程：用户发消息 → Persona 判断回应态度语气 → Memory 补充共同记忆 → 输出",
+    "定义进化机制：追加原材料→增量分析→merge、对话纠正→识别修正点→写入 Correction 层、版本管理→自动存档→支持回滚",
+    "定义用户旅程五步流程：基础信息录入 → 原材料导入 → 自动分析 → 生成预览确认 → 写入文件",
+    "定义安全边界五条规则：仅用于个人回忆与情感疗愈、不主动联系真人、不鼓励不健康执念、数据仅本地存储、Layer 0 硬规则保证不说前任绝不可能说的话",
+    "定义数据源支持矩阵：微信（WeChatMsg/留痕/PyWxDump）、QQ（txt/mht）、照片（JPEG/PNG+EXIF）、朋友圈/微博截图、口述/粘贴",
+    "定义生成产物文件结构规范：exes/{slug}/ 目录下 SKILL.md、memory.md、persona.md、meta.json、versions/、memories/（chats/photos/social）",
+    "定义与同事.skill 的差异对比维度：Part A/B 内容差异、数据源差异、标签体系差异、使用场景差异、安全边界差异、删除命令差异"
+  ],
+  "not_responsible_for": [
+    "任何运行时逻辑的实现和执行",
+    "具体的提示词模板内容定义（由 prompts/ 层负责）",
+    "具体的数据解析算法实现（由 tools/ 层负责）",
+    "文件操作和版本管理的代码实现（由 tools/skill_writer.py 和 tools/version_manager.py 负责）",
+    "生成的前任 Skill 文件的实际内容填充",
+    "用户交互流程的编排执行（由 SKILL.md 入口编排层负责）"
+  ],
+  "depends_on": [],
+  "public_interface": [
+    {
+      "name": "PRD.md",
+      "signature": "Markdown 文档，包含产品定位、核心概念、用户旅程、安全边界、数据源支持矩阵、文件结构、与同事.skill 对比等章节",
+      "description": "前任.skill 的完整产品需求文档，为项目所有其他模块提供设计规范和概念定义。其中定义的两层架构（Part A Memory + Part B Persona）、5层 Persona 优先级结构（Layer 0-4）、进化机制（增量 merge + 对话纠正 + 版本管理）、安全边界（5条硬性规则）和文件结构（exes/{slug}/ 目录规范）是其他层实现的规范依据。"
+    }
+  ],
+  "modification_rules": [
+    {
+      "rule": "修改两层架构定义（Part A Memory / Part B Persona 的职责划分）时，必须同步检查并更新 prompts/memory_builder.md、prompts/persona_builder.md、prompts/merger.md 和 SKILL.md 的对应逻辑",
+      "reason": "两层架构是核心概念，贯穿提示词引导层和入口编排层的所有流程"
+    },
+    {
+      "rule": "修改安全边界规则时，必须同步更新 SKILL.md 安全边界部分和 prompts/persona_builder.md 的 Layer 0 硬规则定义",
+      "reason": "安全边界在入口编排层和 Persona Layer 0 中多重冗余实现，需保持一致"
+    },
+    {
+      "rule": "修改文件结构规范（exes/{slug}/ 目录结构）时，必须同步更新 tools/skill_writer.py 的 init 逻辑和 tools/version_manager.py 的备份/回滚路径",
+      "reason": "文件管理工具层的目录操作直接依赖 PRD 中定义的文件结构规范"
+    },
+    {
+      "rule": "修改数据源支持矩阵时，必须同步检查对应的 tools/ 解析器是否需要新增或调整格式支持",
+      "reason": "数据解析工具层的解析器实现对应 PRD 中定义的数据源格式"
+    },
+    {
+      "rule": "修改用户旅程步骤时，必须同步更新 SKILL.md 的流程编排和 prompts/intake.md 的问题序列",
+      "reason": "入口编排层和信息录入引导脚本直接实现 PRD 定义的用户旅程"
+    },
+    {
+      "rule": "不得删除或弱化安全边界相关内容，特别是 Layer 0 硬规则和防止不健康执念的规定",
+      "reason": "安全边界是产品的核心约束，涉及用户心理健康保护，是不可协商的底线"
+    }
+  ]
+}

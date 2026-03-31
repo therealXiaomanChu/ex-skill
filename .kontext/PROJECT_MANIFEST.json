@@ -1,0 +1,157 @@
+{
+  "project": {
+    "business_context": "前任.skill 是一个运行在 Claude Code 上的 meta-skill（元技能）。用户通过对话式交互提供原材料（微信/QQ聊天记录、照片、朋友圈截图、口述描述），系统自动分析并生成一个包含 Relationship Memory（关系记忆）和 Persona（人物性格）的独立可运行 AI Skill 文件。生成的 Skill 能够以前任的说话风格、情感模式和行为习惯进行对话模拟，用于个人回忆与情感疗愈。项目强调安全边界：仅限本地使用、不鼓励不健康执念、不主动联系真人、Layer 0 硬规则保证不说前任绝不可能说的话。",
+    "core_flows": [
+      {
+        "entry_point": "SKILL.md",
+        "name": "创建新前任 Skill",
+        "steps": "用户触发 /create-ex → Step 1 基础信息录入（花名/代号、基本信息、性格画像，共3个问题）→ Step 2 原材料导入（微信聊天记录/QQ记录/社交媒体/照片/口述，可混用可跳过）→ Step 3 自动分析（线路A提取关系记忆→Memory，线路B提取性格行为→Persona）→ Step 4 生成预览并用户确认 → Step 5 写入文件到 exes/{slug}/ 目录，生成 SKILL.md、memory.md、persona.md、meta.json"
+      },
+      {
+        "entry_point": "tools/wechat_parser.py",
+        "name": "微信聊天记录解析",
+        "steps": "用户提供微信导出文件 → 自动检测格式（WeChatMsg txt/html/csv、留痕 JSON、PyWxDump SQLite、纯文本）→ 解析消息列表 → 分析高频语气词、emoji偏好、消息长度、标点习惯、说话风格 → 输出分析结果供 Memory/Persona 构建使用"
+      },
+      {
+        "entry_point": "tools/qq_parser.py",
+        "name": "QQ聊天记录解析",
+        "steps": "用户提供QQ导出文件 → 解析 txt 或 mht 格式 → 提取消息和发送者信息 → 分析聊天特征 → 输出分析结果"
+      },
+      {
+        "entry_point": "tools/social_parser.py",
+        "name": "社交媒体内容解析",
+        "steps": "扫描截图/导出目录 → 按文件类型分类（图片/文本/其他）→ 图片通过 Claude Read 工具读取，文本文件直接解析 → 提取公开人设、兴趣偏好、文案风格"
+      },
+      {
+        "entry_point": "tools/photo_analyzer.py",
+        "name": "照片元信息分析",
+        "steps": "扫描照片目录 → 读取 EXIF 信息（拍摄时间、GPS坐标）→ 转换GPS为经纬度 → 构建关系时间线和常去地点列表 → 输出分析结果"
+      },
+      {
+        "entry_point": "tools/skill_writer.py",
+        "name": "Skill 文件管理",
+        "steps": "list：扫描 exes/ 目录列出所有已创建的前任 Skill；init：创建 Skill 目录结构（versions/memories/chats/photos/social）；combine：合并 memory.md + persona.md 生成完整可运行的 SKILL.md"
+      },
+      {
+        "entry_point": "tools/version_manager.py",
+        "name": "版本管理与回滚",
+        "steps": "backup：读取当前 meta.json 版本号并递增，将当前文件复制到 versions/{version}/ 目录存档；rollback：从指定版本目录恢复文件；list：列出所有历史版本"
+      },
+      {
+        "entry_point": "prompts/merger.md",
+        "name": "进化模式（增量更新）",
+        "steps": "用户追加新原材料或口述 → 按 memory_analyzer/persona_analyzer 维度增量分析 → 与现有内容对比一致性/冲突 → Merge 策略：Memory 事实类追加到对应章节，Persona 性格类强化或追加证据 → 冲突用 [⚠️ 冲突] 标注 → Edit 工具追加内容并标注来源和日期"
+      },
+      {
+        "entry_point": "prompts/correction_handler.md",
+        "name": "对话纠正",
+        "steps": "用户在使用前任 Skill 对话时表达'不对/ta不会这样说/ta应该是...' → 识别纠正类型（Memory事实纠正 or Persona性格纠正）→ 修正对应文件的对应层 → 写入 Correction 记录"
+      },
+      {
+        "entry_point": "tools/skill_writer.py",
+        "name": "列出已有前任",
+        "steps": "用户触发 /list-exes → 调用 skill_writer.py --action list → 扫描 exes/ 目录读取各 meta.json → 展示代号、名称、版本、更新时间"
+      },
+      {
+        "entry_point": "prompts/memory_builder.md",
+        "name": "关系记忆构建",
+        "steps": "从原材料中按维度提取：关系时间线、日常模式、共同经历、Inside Jokes、饮食偏好、兴趣爱好、争吵模式、甜蜜瞬间、分手相关 → 按 memory_builder 模板生成结构化 memory.md"
+      },
+      {
+        "entry_point": "prompts/persona_builder.md",
+        "name": "人物性格构建",
+        "steps": "从原材料中提取说话风格、情感表达模式、依恋类型、决策模式、人际行为 → 将用户标签翻译为具体行为规则 → 按5层结构（Layer 0硬规则 → Layer 1身份锚定 → Layer 2说话风格 → Layer 3情感模式 → Layer 4关系行为）生成 persona.md"
+      }
+    ],
+    "name": "前任.skill",
+    "one_line": "把前任蒸馏成 AI Skill，通过聊天记录、照片、社交媒体等原材料生成可对话的前任 Persona",
+    "type": "cli_tool"
+  },
+  "scale": {
+    "estimated_files": "20-30",
+    "modules": "3（tools 工具层、prompts 提示词层、docs 文档层）",
+    "phase": "development"
+  },
+  "status": {
+    "completed_modules": [
+      "SKILL.md 主流程定义（创建/进化/列出）",
+      "prompts/intake.md 信息录入引导脚本",
+      "prompts/memory_analyzer.md 关系记忆分析器",
+      "prompts/memory_builder.md 关系记忆生成模板",
+      "prompts/persona_analyzer.md 性格行为分析器",
+      "prompts/persona_builder.md Persona 5层生成模板",
+      "prompts/merger.md 增量 Merge 逻辑",
+      "prompts/correction_handler.md 对话纠正处理器",
+      "tools/wechat_parser.py 微信聊天记录解析（WeChatMsg txt/留痕 JSON/纯文本）",
+      "tools/skill_writer.py Skill 文件管理（list/init/combine）",
+      "tools/photo_analyzer.py 照片 EXIF 分析",
+      "tools/qq_parser.py QQ 聊天记录解析",
+      "tools/social_parser.py 社交媒体内容解析",
+      "tools/version_manager.py 版本管理与回滚",
+      "docs/PRD.md 产品需求文档",
+      "README.md 项目说明文档"
+    ],
+    "in_progress": [
+      "WeChatMsg HTML/CSV 格式解析（detect_format 已识别但解析函数未见完整实现）",
+      "PyWxDump SQLite 格式解析（格式检测已实现但解析函数未见）",
+      "示例前任 Skill（exes/example_xiaoming/ 在 .gitignore 中保留但目录内容未见）"
+    ],
+    "not_started": [
+      "自动编码检测（chardet 在 requirements.txt 中标注为可选未启用）",
+      "增强日期解析（python-dateutil 标注为可选未启用）",
+      "/let-go 温柔删除命令实现",
+      "生成的前任 Skill 的实际对话运行时测试"
+    ]
+  },
+  "tech_stack": {
+    "cli_framework": "argparse（标准库）",
+    "data_format": "JSON（标准库 json 模块）",
+    "git_client": "无（使用自定义 version_manager.py 实现文件级版本管理）",
+    "key_decisions": [
+      {
+        "constraint": "必须在 Claude Code 环境中运行，依赖 SKILL.md 格式规范和 ${CLAUDE_SKILL_DIR} 环境变量",
+        "decision": "以 Claude Code Skill 协议为核心架构，而非独立应用",
+        "reason": "利用 Claude Code 的对话能力和工具调用机制（Read/Write/Edit/Bash），无需自建 LLM 调用链"
+      },
+      {
+        "constraint": "两部分需保持一致性，Persona 的 Layer 0 硬规则优先级最高不可被覆盖",
+        "decision": "两层架构：Part A Relationship Memory + Part B Persona",
+        "reason": "将事实性记忆（共同经历、日常模式）与行为驱动模型（说话风格、情感模式）解耦，可独立使用也可组合运行"
+      },
+      {
+        "constraint": "高层规则不可被低层覆盖，Layer 0 为不可违背的硬规则",
+        "decision": "Persona 采用 5 层优先级结构（Layer 0-4）",
+        "reason": "确保核心行为约束（如不说前任绝不可能说的话）不被低层规则覆盖，模拟真实人格的多层次特征"
+      },
+      {
+        "constraint": "无 Pillow 时照片分析功能不可用，需优雅降级",
+        "decision": "最小依赖策略，仅 Pillow 为核心可选依赖",
+        "reason": "降低安装门槛，核心功能（聊天记录解析）仅使用 Python 标准库，照片 EXIF 提取为增强功能"
+      },
+      {
+        "constraint": "exes/ 目录在 .gitignore 中排除，所有用户数据不得外传",
+        "decision": "数据仅本地存储，不上传任何服务器",
+        "reason": "涉及高度私密的个人情感数据和聊天记录，隐私保护是核心安全边界"
+      },
+      {
+        "constraint": "格式检测基于文件扩展名和内容特征，可能存在误判，提供 --format 手动指定选项",
+        "decision": "支持多种微信/QQ导出工具格式并自动检测",
+        "reason": "用户使用不同的聊天记录导出工具（WeChatMsg、留痕、PyWxDump、QQ消息管理器），需兼容主流格式"
+      },
+      {
+        "constraint": "新信息与已有信息冲突时需标注而非自动覆盖，由用户决定",
+        "decision": "增量进化而非全量重建",
+        "reason": "用户可能分多次提供原材料或在使用中纠正，增量 merge 保留已有分析成果"
+      },
+      {
+        "constraint": "Layer 0 硬规则强制写入，不可被用户修改；检测到不健康执念时需温和提醒",
+        "decision": "安全边界内置于 Skill 生成逻辑中",
+        "reason": "防止生成的 Skill 被用于骚扰、跟踪或产生不健康执念"
+      }
+    ],
+    "language": "Python 3.9+",
+    "llm_client": "Claude Code（作为运行时宿主环境，通过 SKILL.md 协议驱动）",
+    "schema_validator": "无，手动校验",
+    "template_engine": "Markdown 模板（通过 prompt 文件 + Python 字符串拼接）"
+  }
+}
