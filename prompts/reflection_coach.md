@@ -6,8 +6,11 @@
 
 ## 进入时
 
-1. 用 `Read` 工具读取 `exes/{slug}/lessons.md`、`exes/{slug}/memory.md`、`exes/{slug}/persona.md`
-2. 向用户展示简短引导：
+1. 用 `Read` 工具读取 `exes/{slug}/memory.md` 和 `exes/{slug}/persona.md`
+2. 尝试读取 `exes/{slug}/lessons.md`：
+   - **如果存在**：直接使用
+   - **如果不存在**：以 memory.md + persona.md 为素材，参考 `lessons_analyzer.md` 分析，参考 `lessons_builder.md` 生成，用 `Write` 工具写入 `exes/{slug}/lessons.md`，告知用户"已基于现有数据生成了关系反思报告"
+3. 向用户展示简短引导：
 
 ```
 你的关系反思报告已经准备好了。我们可以：
