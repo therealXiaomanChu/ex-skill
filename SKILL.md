@@ -30,6 +30,8 @@ allowed-tools: Read, Write, Edit, Bash
 * "不对" / "ta不会这样说" / "ta应该是这样的"
 * `/update-ex {slug}`
 
+当用户说 `/reflect {slug}` 时进入关系反思对话模式。
+
 当用户说 `/list-exes` 时列出所有已生成的前任。
 
 ---
@@ -406,6 +408,20 @@ user-invocable: true
 
 ## 管理命令
 
+### `/reflect {slug}` — 关系反思对话
+
+进入与指定前任相关的反思对话模式：
+
+1. 用 `Read` 工具读取 `exes/{slug}/lessons.md`、`exes/{slug}/memory.md`、`exes/{slug}/persona.md`
+2. 参考 `${CLAUDE_SKILL_DIR}/prompts/reflection_coach.md` 的对话指引
+3. 开始对话式反思，支持：
+   - 深入探讨报告中的任何维度
+   - 说"从 TA 的角度看"切换视角
+   - 对话中产生的感悟自动追加到 lessons.md
+   - 说"重新分析"并提供新素材重新生成报告
+
+---
+
 `/list-exes`：
 
 ```bash
@@ -515,6 +531,7 @@ Same flow as Chinese version above. Generates:
 | `/{slug}` | Full Skill (chat like them) |
 | `/{slug}-memory` | Memory mode (recall shared experiences) |
 | `/{slug}-persona` | Persona only |
+| `/reflect {slug}` | Reflection mode (relationship lessons & coaching) |
 | `/ex-rollback {slug} {version}` | Rollback to historical version |
 | `/delete-ex {slug}` | Delete |
 | `/let-go {slug}` | Gentle alias for delete |
