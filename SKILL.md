@@ -251,6 +251,12 @@ Persona 摘要：
   - 口头禅：{xxx}
   ...
 
+关系反思摘要：
+  - 性格组合：{xxx}
+  - 核心冲突模式：{xxx}
+  - 最大的课题：{xxx}
+  ...
+
 确认生成？还是需要调整？
 ```
 
@@ -273,7 +279,11 @@ mkdir -p exes/{slug}/memories/social
 **3. 写入 persona.md**（用 Write 工具）：
 路径：`exes/{slug}/persona.md`
 
-**4. 写入 meta.json**（用 Write 工具）：
+**4. 写入 lessons.md**（用 Write 工具）：
+路径：`exes/{slug}/lessons.md`
+参考 `${CLAUDE_SKILL_DIR}/prompts/lessons_builder.md` 模板生成关系反思报告。
+
+**5. 写入 meta.json**（用 Write 工具）：
 路径：`exes/{slug}/meta.json`
 内容：
 
@@ -303,7 +313,7 @@ mkdir -p exes/{slug}/memories/social
 }
 ```
 
-**5. 生成完整 SKILL.md**（用 Write 工具）：
+**6. 生成完整 SKILL.md**（用 Write 工具）：
 路径：`exes/{slug}/SKILL.md`
 
 SKILL.md 结构：
@@ -355,8 +365,10 @@ user-invocable: true
 触发词：/{slug}（完整版 — 像ta一样跟你聊天）
         /{slug}-memory（回忆模式 — 帮你回忆那些事）
         /{slug}-persona（性格模式 — 仅人物性格）
+        /reflect {slug}（反思模式 — 聊聊经验教训）
 
 想聊就聊，觉得哪里不像ta，直接说"ta不会这样"，我来更新。
+想反思这段关系，用 /reflect {slug} 进入反思模式。
 不想聊了也没关系。
 ```
 
