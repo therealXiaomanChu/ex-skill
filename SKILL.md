@@ -223,6 +223,12 @@ python3 ${CLAUDE_SKILL_DIR}/tools/photo_analyzer.py \
 * 将用户填写的标签翻译为具体行为规则（参见标签翻译表）
 * 从原材料中提取：说话风格、情感表达模式、依恋类型、爱的语言
 
+**线路 C（Relationship Lessons）**：
+
+* 参考 `${CLAUDE_SKILL_DIR}/prompts/lessons_analyzer.md` 中的 7 个分析维度
+* 从双方视角分析：性格画像、沟通模式、冲突循环、情感需求、边界问题、成长轨迹、分手复盘
+* 提炼 5-10 条可行动的成长课题
+
 ### Step 4：生成并预览
 
 参考 `${CLAUDE_SKILL_DIR}/prompts/memory_builder.md` 生成 Relationship Memory 内容。
