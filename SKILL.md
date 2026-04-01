@@ -412,9 +412,15 @@ user-invocable: true
 
 进入与指定前任相关的反思对话模式：
 
-1. 用 `Read` 工具读取 `exes/{slug}/lessons.md`、`exes/{slug}/memory.md`、`exes/{slug}/persona.md`
-2. 参考 `${CLAUDE_SKILL_DIR}/prompts/reflection_coach.md` 的对话指引
-3. 开始对话式反思，支持：
+1. 用 `Read` 工具读取 `exes/{slug}/memory.md` 和 `exes/{slug}/persona.md`
+2. 尝试读取 `exes/{slug}/lessons.md`——如果文件不存在，则自动生成：
+   - 以已有的 memory.md + persona.md 作为分析素材
+   - 参考 `${CLAUDE_SKILL_DIR}/prompts/lessons_analyzer.md` 进行 7 维度分析
+   - 参考 `${CLAUDE_SKILL_DIR}/prompts/lessons_builder.md` 生成 lessons.md
+   - 用 `Write` 工具写入 `exes/{slug}/lessons.md`
+   - 告知用户："已基于现有数据生成了关系反思报告，我们可以开始聊了。"
+3. 参考 `${CLAUDE_SKILL_DIR}/prompts/reflection_coach.md` 的对话指引
+4. 开始对话式反思，支持：
    - 深入探讨报告中的任何维度
    - 说"从 TA 的角度看"切换视角
    - 对话中产生的感悟自动追加到 lessons.md
