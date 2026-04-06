@@ -157,7 +157,6 @@ The architecture of this project is directly inspired by **[colleague-skill (同
 
 This project follows the [AgentSkills](https://agentskills.io) open standard, compatible with Claude Code and OpenClaw.
 
-
 ---
 
 MIT License © [therealXiaomanChu](https://github.com/therealXiaomanChu)
