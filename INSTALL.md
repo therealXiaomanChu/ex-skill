@@ -8,19 +8,19 @@
 
 ```bash
 mkdir -p .claude/skills
-git clone https://github.com/therealXiaomanChu/ex-partner-skill .claude/skills/create-ex
+git clone https://github.com/therealXiaomanChu/ex-skill .claude/skills/create-ex
 ```
 
 ### 全局安装
 
 ```bash
-git clone https://github.com/therealXiaomanChu/ex-partner-skill ~/.claude/skills/create-ex
+git clone https://github.com/therealXiaomanChu/ex-skill ~/.claude/skills/create-ex
 ```
 
 ### OpenClaw 安装
 
 ```bash
-git clone https://github.com/therealXiaomanChu/ex-partner-skill ~/.openclaw/workspace/skills/create-ex
+git clone https://github.com/therealXiaomanChu/ex-skill ~/.openclaw/workspace/skills/create-ex
 ```
 
 ---
