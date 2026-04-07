@@ -62,6 +62,8 @@ After creation, use `/{slug}` to chat with the generated ex Skill.
 | `/{slug}` | Full Skill (chat like them) |
 | `/{slug}-memory` | Memory mode (recall shared experiences) |
 | `/{slug}-persona` | Persona only |
+| `/scene {slug1} {slug2} [desc]` | Multi-ex scene mode |
+| `/exit-scene` | Exit scene mode |
 | `/ex-rollback {slug} {version}` | Rollback to a previous version |
 | `/delete-ex {slug}` | Delete |
 | `/let-go {slug}` | Gentle alias for delete |
@@ -132,6 +134,18 @@ Each ex Skill has two parts working together:
 **Love Languages**: Words of Affirmation · Quality Time · Receiving Gifts · Acts of Service · Physical Touch
 
 **Personality Tags**: Talkative · Reserved · Tough-love · Silent treatment · Clingy · Independent · Romantic · Pragmatic · Perfectionist · Procrastinator · Workaholic · Jealous · Insecure · Night owl · Leaves on read · Instant replier ...
+
+### Scene Mode
+
+Use `/scene {slug1} {slug2} [scene description]` to load up to 3 ex personas simultaneously into a shared scene. Each ex speaks strictly in their own style — no mixing. Exit with `/exit-scene`.
+
+```
+/scene first-love summer-fling coffee shop five years later
+```
+
+### Session Memory
+
+When you say goodbye (or after 20+ conversation turns), a session summary is automatically saved to `exes/{slug}/sessions/`. The next time you open a conversation, the 3 most recent summaries are loaded as context — memory carries over naturally, without announcements.
 
 ### Evolution
 

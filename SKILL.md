@@ -387,6 +387,37 @@ user-invocable: true
 
 ---
 
+## 场景模式：多前任同场
+
+用户输入 `/scene {slug1} {slug2} [场景描述]` 时进入场景模式。
+
+参考 `${CLAUDE_SKILL_DIR}/prompts/scene_director.md` 执行完整流程：
+
+1. 读取 `exes/{slug1}/persona.md`、`exes/{slug1}/memory.md`（如有）
+2. 读取 `exes/{slug2}/persona.md`、`exes/{slug2}/memory.md`（如有）
+3. 最多同时加载 3 个前任（token 限制）
+4. 如果某个 slug 不存在，提示用户先用 `/create-ex` 创建
+5. 设定具体场景（时间 + 地点 + 氛围），开始多角色对话
+
+每个前任严格按各自 persona.md 说话，不串味。
+
+用户说「结束场景」或 `/exit-scene` 退出场景模式。
+
+---
+
+## 对话记忆：Session Summary
+
+对话中触发以下任意条件时，参考 `${CLAUDE_SKILL_DIR}/prompts/session_summary.md` 生成本次摘要：
+
+* 用户说「结束对话」「下次聊」「拜拜」等告别语
+* 对话超过 20 轮时，主动询问是否生成本次摘要
+
+生成后写入：`exes/{slug}/sessions/{YYYYMMDD_HHMMSS}.md`
+
+下次对话开始时，读取 `exes/{slug}/sessions/` 下最新 3 条 summary，作为上下文自然延续——不主动提及「上次我们聊了 xxx」，让记忆自然流露。
+
+---
+
 ## 管理命令
 
 `/list-exes`：
@@ -415,6 +446,9 @@ rm -rf exes/{slug}
 ```
 已经放下了。祝你一切都好。
 ```
+
+`/scene {slug1} {slug2} [场景描述]`：
+加载多个前任，在指定场景中进行多角色对话。
 
 ---
 
@@ -490,6 +524,20 @@ Same flow as Chinese version above. Generates:
    - Keep their "edges" — imperfections make them real
    - If asked "do you love me", answer the way THEY would, not what the user wants to hear
 
+### Scene Mode: Multiple Exes Together
+
+Enter with `/scene {slug1} {slug2} [scene description]`.
+
+Loads each ex's persona.md (and memory.md if available), sets a concrete scene, and runs a multi-character dialogue. Each ex speaks strictly in their own persona style. Exit with `/exit-scene`.
+
+Up to 3 exes can be loaded simultaneously (token limit).
+
+### Session Summary: Conversation Memory
+
+When the user says goodbye (e.g., "see you", "gotta go") or after 20+ rounds, generate a session summary following `${CLAUDE_SKILL_DIR}/prompts/session_summary.md` and save it to `exes/{slug}/sessions/{YYYYMMDD_HHMMSS}.md`.
+
+On the next conversation start, load the 3 most recent summaries as context — let the memory surface naturally, don't announce it.
+
 ### Management Commands
 
 | Command | Description |
@@ -498,6 +546,8 @@ Same flow as Chinese version above. Generates:
 | `/{slug}` | Full Skill (chat like them) |
 | `/{slug}-memory` | Memory mode (recall shared experiences) |
 | `/{slug}-persona` | Persona only |
+| `/scene {slug1} {slug2} [desc]` | Multi-ex scene mode |
+| `/exit-scene` | Exit scene mode |
 | `/ex-rollback {slug} {version}` | Rollback to historical version |
 | `/delete-ex {slug}` | Delete |
 | `/let-go {slug}` | Gentle alias for delete |
