@@ -2,25 +2,25 @@
 
 ## Claude Code 安装
 
-### 项目级安装（推荐）
+### 项目安装
 
 在你的 git 仓库根目录执行：
 
 ```bash
 mkdir -p .claude/skills
-git clone https://github.com/therealXiaomanChu/ex-partner-skill .claude/skills/create-ex
+git clone https://github.com/therealXiaomanChu/ex-skill .claude/skills/create-ex
 ```
 
 ### 全局安装
 
 ```bash
-git clone https://github.com/therealXiaomanChu/ex-partner-skill ~/.claude/skills/create-ex
+git clone https://github.com/therealXiaomanChu/ex-skill ~/.claude/skills/create-ex
 ```
 
 ### OpenClaw 安装
 
 ```bash
-git clone https://github.com/therealXiaomanChu/ex-partner-skill ~/.openclaw/workspace/skills/create-ex
+git clone https://github.com/therealXiaomanChu/ex-skill ~/.openclaw/workspace/skills/create-ex
 ```
 
 ---
@@ -39,28 +39,8 @@ pip3 install -r requirements.txt
 ---
 
 ## 微信聊天记录导出指南
-
-要获取微信聊天记录，你需要使用第三方导出工具。以下是推荐的工具：
-
-### WeChatMsg（推荐）
-
-- GitHub: https://github.com/LC044/WeChatMsg
-- 支持 Windows
 - 导出格式：txt / html / csv
 - 使用方法：下载安装 → 登录微信PC版 → 选择联系人 → 导出
-
-### PyWxDump
-
-- GitHub: https://github.com/xaoyaoo/PyWxDump
-- 支持 Windows
-- 导出格式：SQLite 数据库
-- 适合有编程基础的用户
-
-### 留痕
-
-- 支持 macOS
-- 导出格式：JSON
-- 适合 Mac 用户
 
 ### 手动复制
 
@@ -77,7 +57,7 @@ pip3 install -r requirements.txt
 1. 打开 QQ → 点击左下角 ≡ → 设置
 2. 通用 → 聊天记录 → 导出聊天记录
 3. 选择联系人 → 导出为 txt 格式
-4. 在 `/create-ex` 时使用方式 B
+4. QQ的聊天记录也可以直接复制粘贴
 
 ---
 
