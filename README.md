@@ -76,6 +76,8 @@ pip3 install -r requirements.txt
 | `/{slug}` | 调用完整 Skill（像ta一样跟你聊天） |
 | `/{slug}-memory` | 回忆模式（帮你回忆那些事） |
 | `/{slug}-persona` | 仅人物性格 |
+| `/reflect {slug}` | 关系反思模式（复盘经验教训） |
+| `/update-ex {slug}` | 追加素材或纠正性格 |
 | `/ex-rollback {slug} {version}` | 回滚到历史版本 |
 | `/delete-ex {slug}` | 删除 |
 | `/let-go {slug}` | 放下 |
@@ -126,6 +128,25 @@ pip3 install -r requirements.txt
              算了不想吵
 ```
 
+**场景五：关系反思**
+
+```
+用户      ❯ /reflect xx
+
+前任.skill ❯ 已加载 xx 的关系反思报告。
+
+             你们的核心冲突是「焦虑-回避」追逃模式：
+             你越追问确认，她越需要空间退后；
+             她越退后沉默，你越焦虑追问。
+
+             想聊哪个维度？
+             - 沟通模式：你们的「翻译错误」在哪里
+             - 冲突循环：每次吵架的升级路径
+             - 课题清单：7 条可行动的成长建议
+
+             也可以说「从TA的角度看」切换视角。
+```
+
 ---
 
 ## 功能特性
@@ -142,12 +163,13 @@ pip3 install -r requirements.txt
 
 ### 生成的 Skill 结构
 
-每个前任 Skill 由两部分组成，共同驱动输出：
+每个前任 Skill 由三部分组成，共同驱动输出：
 
 | 部分 | 内容 |
 |------|------|
 | **Part A — Relationship Memory** | 共同经历、约会地点、inside jokes、争吵模式、甜蜜瞬间、关系时间线 |
 | **Part B — Persona** | 5 层性格结构：硬规则 → 身份 → 说话风格 → 情感模式 → 关系行为 |
+| **Part C — Lessons** | 7 维度关系反思：性格画像、沟通模式、冲突循环、需求错配、边界、成长轨迹、分手复盘 + 可行动课题清单 |
 
 运行逻辑：`收到消息 → Persona 判断ta会怎么回 → Memory 补充共同记忆 → 用ta的方式输出`
 
@@ -169,6 +191,26 @@ pip3 install -r requirements.txt
 * **对话纠正** → 说「ta不会这样说」→ 写入 Correction 层，立即生效
 * **版本管理** → 每次更新自动存档，支持回滚
 
+### 关系反思（`/reflect`）
+
+除了模拟对话，前任.skill 还提供**关系反思**功能——帮你从这段关系中学到东西。
+
+输入 `/reflect {slug}` 进入反思模式，系统会基于聊天记录自动生成一份 7 维度的关系反思报告（`lessons.md`）：
+
+| 维度 | 分析内容 |
+|------|----------|
+| 性格画像 | 双方各自的 MBTI/依恋类型/情绪特征，以及组合效应 |
+| 沟通模式 | 各自的沟通风格、不匹配之处、「翻译错误」 |
+| 冲突循环 | 反复出现的争吵模式、升级路径、收尾方式 |
+| 需求错配 | 双方核心需求是什么、哪些没被满足、怎么互相踩雷 |
+| 边界与自我 | 谁在过度迁就、哪些边界被突破 |
+| 成长轨迹 | 关系期间双方各自的变化 |
+| 分手复盘 | 根本原因、被忽略的信号、如果能重来 |
+
+最后提炼 5-10 条**可行动的成长课题**，每条包含：现象 → 根因 → 下段关系中怎么做。
+
+反思模式支持对话式深入探讨——你可以说「从TA的角度看」切换视角，也可以提供新素材重新分析。对话中产生的感悟会自动追加到报告中。
+
 ---
 
 ## 项目结构
@@ -182,8 +224,11 @@ create-ex/
 │   ├── intake.md           #   对话式信息录入
 │   ├── memory_analyzer.md  #   关系记忆提取
 │   ├── persona_analyzer.md #   性格行为提取（含标签翻译表）
+│   ├── lessons_analyzer.md #   关系反思 7 维度分析
 │   ├── memory_builder.md   #   memory.md 生成模板
 │   ├── persona_builder.md  #   persona.md 五层结构模板
+│   ├── lessons_builder.md  #   lessons.md 反思报告模板
+│   ├── reflection_coach.md #   /reflect 对话式反思指引
 │   ├── merger.md           #   增量 merge 逻辑
 │   └── correction_handler.md # 对话纠正处理
 ├── tools/                  # Python 工具

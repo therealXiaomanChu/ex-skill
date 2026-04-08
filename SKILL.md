@@ -30,6 +30,8 @@ allowed-tools: Read, Write, Edit, Bash
 * "不对" / "ta不会这样说" / "ta应该是这样的"
 * `/update-ex {slug}`
 
+当用户说 `/reflect {slug}` 时进入关系反思对话模式。
+
 当用户说 `/list-exes` 时列出所有已生成的前任。
 
 ---
@@ -224,6 +226,12 @@ python3 ${CLAUDE_SKILL_DIR}/tools/photo_analyzer.py \
 * 将用户填写的标签翻译为具体行为规则（参见标签翻译表）
 * 从原材料中提取：说话风格、情感表达模式、依恋类型、爱的语言
 
+**线路 C（Relationship Lessons）**：
+
+* 参考 `${CLAUDE_SKILL_DIR}/prompts/lessons_analyzer.md` 中的 7 个分析维度
+* 从双方视角分析：性格画像、沟通模式、冲突循环、情感需求、边界问题、成长轨迹、分手复盘
+* 提炼 5-10 条可行动的成长课题
+
 ### Step 4：生成并预览
 
 参考 `${CLAUDE_SKILL_DIR}/prompts/memory_builder.md` 生成 Relationship Memory 内容。
@@ -244,6 +252,12 @@ Persona 摘要：
   - 依恋类型：{xxx}
   - 情感表达：{xxx}
   - 口头禅：{xxx}
+  ...
+
+关系反思摘要：
+  - 性格组合：{xxx}
+  - 核心冲突模式：{xxx}
+  - 最大的课题：{xxx}
   ...
 
 确认生成？还是需要调整？
@@ -268,7 +282,11 @@ mkdir -p exes/{slug}/memories/social
 **3. 写入 persona.md**（用 Write 工具）：
 路径：`exes/{slug}/persona.md`
 
-**4. 写入 meta.json**（用 Write 工具）：
+**4. 写入 lessons.md**（用 Write 工具）：
+路径：`exes/{slug}/lessons.md`
+参考 `${CLAUDE_SKILL_DIR}/prompts/lessons_builder.md` 模板生成关系反思报告。
+
+**5. 写入 meta.json**（用 Write 工具）：
 路径：`exes/{slug}/meta.json`
 内容：
 
@@ -298,7 +316,7 @@ mkdir -p exes/{slug}/memories/social
 }
 ```
 
-**5. 生成完整 SKILL.md**（用 Write 工具）：
+**6. 生成完整 SKILL.md**（用 Write 工具）：
 路径：`exes/{slug}/SKILL.md`
 
 SKILL.md 结构：
@@ -350,8 +368,10 @@ user-invocable: true
 触发词：/{slug}（完整版 — 像ta一样跟你聊天）
         /{slug}-memory（回忆模式 — 帮你回忆那些事）
         /{slug}-persona（性格模式 — 仅人物性格）
+        /reflect {slug}（反思模式 — 聊聊经验教训）
 
 想聊就聊，觉得哪里不像ta，直接说"ta不会这样"，我来更新。
+想反思这段关系，用 /reflect {slug} 进入反思模式。
 不想聊了也没关系。
 ```
 
@@ -388,6 +408,26 @@ user-invocable: true
 ---
 
 ## 管理命令
+
+### `/reflect {slug}` — 关系反思对话
+
+进入与指定前任相关的反思对话模式：
+
+1. 用 `Read` 工具读取 `exes/{slug}/memory.md` 和 `exes/{slug}/persona.md`
+2. 尝试读取 `exes/{slug}/lessons.md`——如果文件不存在，则自动生成：
+   - 以已有的 memory.md + persona.md 作为分析素材
+   - 参考 `${CLAUDE_SKILL_DIR}/prompts/lessons_analyzer.md` 进行 7 维度分析
+   - 参考 `${CLAUDE_SKILL_DIR}/prompts/lessons_builder.md` 生成 lessons.md
+   - 用 `Write` 工具写入 `exes/{slug}/lessons.md`
+   - 告知用户："已基于现有数据生成了关系反思报告，我们可以开始聊了。"
+3. 参考 `${CLAUDE_SKILL_DIR}/prompts/reflection_coach.md` 的对话指引
+4. 开始对话式反思，支持：
+   - 深入探讨报告中的任何维度
+   - 说"从 TA 的角度看"切换视角
+   - 对话中产生的感悟自动追加到 lessons.md
+   - 说"重新分析"并提供新素材重新生成报告
+
+---
 
 `/list-exes`：
 
@@ -498,6 +538,7 @@ Same flow as Chinese version above. Generates:
 | `/{slug}` | Full Skill (chat like them) |
 | `/{slug}-memory` | Memory mode (recall shared experiences) |
 | `/{slug}-persona` | Persona only |
+| `/reflect {slug}` | Reflection mode (relationship lessons & coaching) |
 | `/ex-rollback {slug} {version}` | Rollback to historical version |
 | `/delete-ex {slug}` | Delete |
 | `/let-go {slug}` | Gentle alias for delete |

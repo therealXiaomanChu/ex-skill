@@ -20,3 +20,8 @@ knowledge/
 # 环境
 .env
 venv/
+
+.spec-workflow
+.claude
+.cache
+logs/
