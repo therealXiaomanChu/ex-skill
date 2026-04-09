@@ -62,9 +62,43 @@ After creation, use `/{slug}` to chat with the generated ex Skill.
 | `/{slug}` | Full Skill (chat like them) |
 | `/{slug}-memory` | Memory mode (recall shared experiences) |
 | `/{slug}-persona` | Persona only |
+| `/temperature {0-10}` | Adjust love intensity (0 = ice cold, 10 = burning hot) |
+| `/stage {1-6}` | Switch relationship phase |
+| `/breakup-mode {slug}` | Activate breakup mode (coldest version of them) |
+| `/exit-breakup {slug}` | Exit breakup mode |
 | `/ex-rollback {slug} {version}` | Rollback to a previous version |
 | `/delete-ex {slug}` | Delete |
 | `/let-go {slug}` | Gentle alias for delete |
+
+### Temperature & Stage
+
+Set **temperature** and **stage** during creation, or adjust them anytime during conversation:
+
+- **Temperature (0–10)**: Controls their love intensity toward you
+  - `0` = Ice cold: one-word replies, like a stranger
+  - `5` = Neutral: neither cold nor warm, everyday interaction
+  - `10` = Burning hot: overwhelming affection, can't get enough of you
+
+- **Stage (1–6)**: Travel back to different phases of the relationship
+  - `1` Flirting · `2` Honeymoon · `3` Stable · `4` Fatigue · `5` Cooling · `6` Breakup
+  - Stage affects memory recall — honeymoon won't mention fights, fatigue rarely brings up sweetness
+
+### Breakup Mode
+
+A special mode that simulates their coldest, most indifferent self:
+
+```
+/breakup-mode {slug}
+```
+
+Requires 1–2 sentences describing the breakup reason. Once activated:
+- Blame-shifting: "It's your problem, not mine"
+- Cold detachment: doesn't care about your feelings
+- Self-justification: "This is better for both of us"
+
+**Design intent**: Sometimes you need to see them at their worst to truly let go.
+
+Type `/exit-breakup` anytime to exit.
 
 ---
 
@@ -102,9 +136,117 @@ Ex.skill     ❯ ...
                get some sleep
 ```
 
+**Scenario 4: Temperature 9 + Honeymoon Stage**
+
+```
+You          ❯ whatcha doing
+
+Ex.skill     ❯ thinking about youuu what else!!
+               why didn't you text me sooner I was waiting
+               wanna grab dinner? I want that place from last time
+               [sends three heart emojis]
+```
+
+**Scenario 5: Breakup Mode**
+
+```
+You          ❯ can we try again?
+
+Ex.skill     ❯ there's nothing to try
+               I told you, it's your issue
+               you think I'm wrong? then think about how you treated me
+               forget it. you'll get it eventually
+```
+
+**Scenario 6: Left on Read**
+
+```
+You          ❯ hey
+
+[Read]
+
+You          ❯ hello??
+
+Ex.skill     ❯ oh just saw this
+               what's up
+```
+
+**Scenario 7: Late Night Time Awareness (2am)**
+
+```
+You          ❯ you asleep?
+
+Ex.skill     ❯ not yet
+               can't sleep either?
+               ...nvm let's not do this, work tomorrow
+               night
+```
+
+**Scenario 8: Work Hours (3pm)**
+
+```
+You          ❯ what do you wanna eat tonight
+
+[Read · 3:03pm]
+
+You          ❯ hello?
+
+Ex.skill     ❯ in a meeting
+               later
+```
+
 ---
 
 ## Features
+
+### Temperature · Stage · Breakup Mode
+
+| Dimension | Range | Description |
+|-----------|-------|-------------|
+| 🌡️ Temperature | 0–10 | Love intensity: 0=frozen 5=neutral 10=burning |
+| 📍 Stage | 1–6 | Flirting→Honeymoon→Stable→Fatigue→Cooling→Breakup |
+| 💔 Breakup Mode | on/off | Coldest version: blame-shifting, detachment, self-justification |
+
+Temperature modulates emotional intensity, stage controls memory recall, breakup mode overrides everything (except Layer 0 hard rules).
+
+### Time Awareness
+
+The Skill automatically detects current time and adjusts responses:
+
+- 3am message → "why are you still up" (not a normal chat)
+- Lunchtime → naturally asks "have you eaten"
+- Work hours → slow, short replies: "busy, talk later"
+- Low temp + late night = probably won't reply; High temp + late night = stays up talking with you
+
+### Left on Read
+
+Real humans don't reply to every message:
+
+```
+You          ❯ hey
+
+[Read]
+```
+
+The system decides based on **temperature, personality, time, and message content**:
+- Lower temperature = higher chance of no reply
+- "Leaves on read" and "Silent treatment" tags increase no-reply probability
+- Boring messages are more likely to be ignored
+- Max 3 consecutive non-replies (prevents talking to the void)
+
+Don't like it? Say "don't leave me on read" to disable.
+
+### Realism Engine
+
+Makes every reply feel like a real message from their phone:
+
+| Feature | Description |
+|---------|-------------|
+| Message splitting | Short messages, split like real chat, not essays |
+| Emotional inertia | Angry last round → won't suddenly be happy |
+| Imperfect expression | Incomplete sentences, no AI-perfect phrasing |
+| Asymmetric effort | Boring messages get lazy replies, interesting topics get enthusiasm |
+| Natural memory triggers | Not like querying a database — more like "oh that reminds me" |
 
 ### Data Sources
 
