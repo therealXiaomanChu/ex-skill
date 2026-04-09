@@ -46,6 +46,7 @@ allowed-tools: Read, Write, Edit, Bash
 | 解析 QQ 聊天记录导出 | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/qq_parser.py` |
 | 解析社交媒体内容 | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/social_parser.py` |
 | 分析照片元信息 | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/photo_analyzer.py` |
+| **检测有毒对话模式** | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/toxic_pattern_detector.py` |
 | 写入/更新 Skill 文件 | `Write` / `Edit` 工具 |
 | 版本管理 | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/version_manager.py` |
 | 列出已有 Skill | `Bash` → `python3 ${CLAUDE_SKILL_DIR}/tools/skill_writer.py --action list` |
@@ -415,6 +416,24 @@ rm -rf exes/{slug}
 ```
 已经放下了。祝你一切都好。
 ```
+
+`/toxic-check {slug}`：
+分析聊天记录中的有毒模式（PUA 话术、煤气灯、情感操控等）：
+
+```bash
+python3 ${CLAUDE_SKILL_DIR}/tools/toxic_pattern_detector.py \
+  --input exes/{slug}/knowledge/messages.txt \
+  --output exes/{slug}/toxic_report.txt \
+  --target "{ex_name}"
+```
+
+输出包括：
+- 煤气灯操纵检测
+- 甩锅模式统计
+- 情感操控识别
+- 冷暴力分析
+- 打压 (Negging) 检测
+- 严重程度评分 (0-100)
 
 ---
 
