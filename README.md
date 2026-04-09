@@ -76,6 +76,8 @@ pip3 install -r requirements.txt
 | `/{slug}` | 调用完整 Skill（像ta一样跟你聊天） |
 | `/{slug}-memory` | 回忆模式（帮你回忆那些事） |
 | `/{slug}-persona` | 仅人物性格 |
+| `/scene {slug1} {slug2} [场景]` | 多前任场景模式 |
+| `/exit-scene` | 退出场景模式 |
 | `/ex-rollback {slug} {version}` | 回滚到历史版本 |
 | `/delete-ex {slug}` | 删除 |
 | `/let-go {slug}` | 放下 |
@@ -163,6 +165,20 @@ pip3 install -r requirements.txt
 
 **MBTI**：16 型全支持，影响沟通风格和决策模式
 
+### 场景模式
+
+输入 `/scene {slug1} {slug2} 场景描述`，同时加载最多 3 个前任的 Persona，在你设定的场景里进行多角色对话。
+
+```
+/scene chuchu daxue 大学毕业五年后的同学聚会上偶遇
+```
+
+每个前任严格按各自的性格说话，不会串味。用 `/exit-scene` 退出。
+
+### 对话记忆持久化
+
+告别时（或对话超过 20 轮后）自动生成本次对话的摘要，存储在 `exes/{slug}/sessions/` 目录。下次打开对话时，自动加载最近 3 条摘要作为上下文——记忆自然延续，不中断。
+
 ### 进化机制
 
 * **追加记忆** → 找到更多聊天记录/照片 → 自动分析增量 → merge 进对应部分
@@ -185,7 +201,9 @@ create-ex/
 │   ├── memory_builder.md   #   memory.md 生成模板
 │   ├── persona_builder.md  #   persona.md 五层结构模板
 │   ├── merger.md           #   增量 merge 逻辑
-│   └── correction_handler.md # 对话纠正处理
+│   ├── correction_handler.md # 对话纠正处理
+│   ├── scene_director.md   #   多前任场景模式
+│   └── session_summary.md  #   对话记忆持久化
 ├── tools/                  # Python 工具
 │   ├── wechat_parser.py    # 微信聊天记录解析
 │   ├── qq_parser.py        # QQ 聊天记录解析
@@ -194,6 +212,14 @@ create-ex/
 │   ├── skill_writer.py     # Skill 文件管理
 │   └── version_manager.py  # 版本存档与回滚
 ├── exes/                   # 生成的前任 Skill（gitignored）
+│   └── {slug}/
+│       ├── SKILL.md
+│       ├── memory.md
+│       ├── persona.md
+│       ├── meta.json
+│       ├── versions/       #   历史版本存档
+│       ├── sessions/       #   对话记忆（session summary）
+│       └── memories/       #   原始材料
 ├── docs/PRD.md
 ├── requirements.txt
 └── LICENSE
