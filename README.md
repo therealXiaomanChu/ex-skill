@@ -36,6 +36,20 @@ git clone https://github.com/therealXiaomanChu/ex-skill .claude/skills/create-ex
 git clone https://github.com/therealXiaomanChu/ex-skill ~/.claude/skills/create-ex
 ```
 
+### OpenCode
+
+```bash
+# 安装到当前项目（在 git 仓库根目录执行）
+mkdir -p .opencode/skills
+git clone https://github.com/therealXiaomanChu/ex-skill .opencode/skills/create-ex
+
+# 或安装到全局（所有项目都能用）
+mkdir -p ~/.config/opencode/skills
+git clone https://github.com/therealXiaomanChu/ex-skill ~/.config/opencode/skills/create-ex
+```
+
+安装后将本项目的 [opencode.json](opencode.json) 中的命令配置合并到你项目的 `opencode.json` 中：
+
 ### 依赖（可选）
 
 ```bash
