@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://python.org)
-[![Claude Code](https://img.shields.io/badge/Claude%20Code-Skill-blueviolet)](https://claude.ai/code)
+[![GitHub Copilot](https://img.shields.io/badge/GitHub%20Copilot-Agent%20Skill-blueviolet)](https://github.com/features/copilot)
 [![AgentSkills](https://img.shields.io/badge/AgentSkills-Standard-green)](https://agentskills.io)
 
 &nbsp;
@@ -23,20 +23,18 @@
 
 ## 安装
 
-### Claude Code
+### GitHub Copilot / AgentSkills
 
-> **重要**：Claude Code 从 **git 仓库根目录** 的 `.claude/skills/` 查找 skill。请在正确的位置执行。
+将此仓库放在 Copilot 工作区可读的位置；推荐直接在当前仓库根目录使用
+`SKILL.md`，或将仓库内容复制到工作区的 AgentSkills skill 目录。
 
 ```bash
 # 安装到当前项目（在 git 仓库根目录执行）
-mkdir -p .claude/skills
-git clone https://github.com/therealXiaomanChu/ex-skill .claude/skills/create-ex
-
-# 或安装到全局（所有项目都能用）
-git clone https://github.com/therealXiaomanChu/ex-skill ~/.claude/skills/create-ex
+git clone https://github.com/therealXiaomanChu/ex-skill
+cd ex-skill
 ```
 
-### 依赖（可选）
+### 依赖（可选，仅照片 EXIF 分析需要）
 
 ```bash
 pip3 install -r requirements.txt
@@ -46,39 +44,34 @@ pip3 install -r requirements.txt
  
 ## 环境要求
  
-- **Claude Code**：免费安装，需要 Node.js 18+（[安装指南](https://docs.anthropic.com/en/docs/claude-code)）
-- **API 消耗**：创建一个前任 Skill 大约消耗 5k-15k tokens，取决于聊天记录量
-- **付费方式**（二选一）：
-  - Claude Pro / Max 订阅：在订阅额度内使用，无需额外配置
-  - Anthropic API Key：按量付费，需在 Claude Code 中配置 key
-- **替代前端**：也可以使用 [OpenClaw](https://github.com/nicepkg/openclaw) 运行本 Skill
+- **GitHub Copilot**：在当前 Copilot 对话/工作区中加载本仓库的 Agent Skill
+- **本地文件**：解析器只读取用户明确提供的本地路径，生成内容写入 `./exes/`
 - **不需要 GPU**，不需要本地模型，不需要 Docker
  
 ---
 
 ## 使用
 
-在 Claude Code 中输入：
+在 Copilot 对话中直接输入自然语言，例如：
 
 ```
-/create-ex
+帮我创建一个前任 skill
 ```
 
 按提示输入前任的代号、基本信息、性格画像，然后选择数据来源。所有字段均可跳过，仅凭描述也能生成。
 
-完成后用 `/{slug}` 调用该前任 Skill，开始对话。
+完成后按 Copilot 当前环境支持的 Skill 选择方式选择生成的 Skill；不依赖 slash command。
 
 ### 管理命令
 
 | 命令 | 说明 |
 |------|------|
-| `/list-exes` | 列出所有前任 Skill |
-| `/{slug}` | 调用完整 Skill（像ta一样跟你聊天） |
-| `/{slug}-memory` | 回忆模式（帮你回忆那些事） |
-| `/{slug}-persona` | 仅人物性格 |
-| `/ex-rollback {slug} {version}` | 回滚到历史版本 |
-| `/delete-ex {slug}` | 删除 |
-| `/let-go {slug}` | 放下 |
+| “列出所有前任 Skill” | 列出所有前任 Skill |
+| “和 {slug} 聊聊” | 调用完整 Skill |
+| “回忆 {slug} 的共同经历” | 回忆模式 |
+| “只分析 {slug} 的性格” | 仅人物性格 |
+| “回滚 {slug} 到 {version}” | 回滚到历史版本 |
+| “删除 {slug}” | 确认后删除 |
 
 ---
 

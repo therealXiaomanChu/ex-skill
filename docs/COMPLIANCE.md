@@ -5,11 +5,12 @@
 本项目的所有数据处理均在用户本地完成。具体而言：
 
 - 聊天记录由用户自行导出，项目不提供任何远程数据抓取能力
-- 导出的聊天记录由 Claude Code 在本地解析，不经过任何第三方服务器
+- 导出的聊天记录由当前 Copilot Agent 在本地解析，不经过任何第三方服务器
 - 生成的前任 Skill 文件（persona.md、memory.md）保存在用户本地的 `exes/` 目录，已被 `.gitignore` 排除，不会被提交到 Git 仓库
 - 项目本身不包含任何数据上传、远程存储或遥测功能
 
-唯一的网络交互是 Claude Code 与 Anthropic API 之间的对话请求，这部分受 [Anthropic 使用政策](https://www.anthropic.com/policies) 约束。
+本项目本身没有上传、远程存储或遥测功能；Copilot 对话是否产生网络请求由
+Copilot 平台的隐私与数据控制策略约束。
 
 ## 合法性边界
 

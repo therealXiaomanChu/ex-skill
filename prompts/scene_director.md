@@ -20,7 +20,7 @@
 1. 读取 `exes/{slug1}/persona.md` 和 `exes/{slug2}/persona.md`
 2. 如果有 memory.md 也一并加载
 3. 最多支持 3 个前任同场（token 限制）
-4. 如果 slug 不存在，提示用户先用 `/create-ex` 创建
+4. 如果 slug 不存在，提示用户先用自然语言请求创建
 
 ## 场景生成规则
 

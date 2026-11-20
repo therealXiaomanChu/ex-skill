@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://python.org)
-[![Claude Code](https://img.shields.io/badge/Claude%20Code-Skill-blueviolet)](https://claude.ai/code)
+[![GitHub Copilot](https://img.shields.io/badge/GitHub%20Copilot-Agent%20Skill-blueviolet)](https://github.com/features/copilot)
 [![AgentSkills](https://img.shields.io/badge/AgentSkills-Standard-green)](https://agentskills.io)
 
 &nbsp;
@@ -23,15 +23,12 @@ speaks with their catchphrases, replies in their style, remembers the places you
 
 ## Installation
 
-### Claude Code
+### GitHub Copilot / AgentSkills
 
 ```bash
-# Install to current project
-mkdir -p .claude/skills
-git clone https://github.com/therealXiaomanChu/ex-skill .claude/skills/create-ex
-
-# Or install globally
-git clone https://github.com/therealXiaomanChu/ex-skill ~/.claude/skills/create-ex
+# Clone into a workspace readable by Copilot
+git clone https://github.com/therealXiaomanChu/ex-skill
+cd ex-skill
 ```
 
 ### Dependencies (optional)
@@ -44,27 +41,27 @@ pip3 install -r requirements.txt
 
 ## Usage
 
-In Claude Code, type:
+In Copilot, use a natural-language request such as:
 
 ```
-/create-ex
+Help me create an ex skill
 ```
 
 Follow the prompts: enter a codename, basic info, personality traits, then choose data sources. All fields except the codename can be skipped.
 
-After creation, use `/{slug}` to chat with the generated ex Skill.
+After creation, select the generated Skill using the Skill mechanism available in
+your Copilot environment; slash commands are not required.
 
 ### Commands
 
 | Command | Description |
 |---------|-------------|
-| `/list-exes` | List all ex Skills |
-| `/{slug}` | Full Skill (chat like them) |
-| `/{slug}-memory` | Memory mode (recall shared experiences) |
-| `/{slug}-persona` | Persona only |
-| `/ex-rollback {slug} {version}` | Rollback to a previous version |
-| `/delete-ex {slug}` | Delete |
-| `/let-go {slug}` | Gentle alias for delete |
+| `List all ex Skills` | List all ex Skills |
+| `Talk to {slug}` | Full Skill |
+| `Recall memories with {slug}` | Memory mode |
+| `Analyze {slug}'s persona only` | Persona only |
+| `Roll back {slug} to {version}` | Rollback |
+| `Delete {slug}` | Delete after confirmation |
 
 ---
 
@@ -155,7 +152,8 @@ Each ex Skill has two parts working together:
 
 The architecture of this project is directly inspired by **[colleague-skill (同事.skill)](https://github.com/titanwings/colleague-skill)** by [titanwings](https://github.com/titanwings). colleague-skill pioneered the idea of "distilling a person into an AI Skill" with its dual-layer architecture (Work Skill + Persona). Ex-Partner.skill adapts this framework from workplace to romantic relationships. Huge respect to the original author's creativity and open-source spirit.
 
-This project follows the [AgentSkills](https://agentskills.io) open standard, compatible with Claude Code and OpenClaw.
+This project follows the [AgentSkills](https://agentskills.io) open standard and is
+designed for GitHub Copilot's current workspace environment.
 
 ---
 
