@@ -1,27 +1,18 @@
 # 详细安装说明
 
-## Claude Code 安装
+## GitHub Copilot 安装
 
 ### 项目安装
 
-在你的 git 仓库根目录执行：
+将仓库克隆到 Copilot 可以读取的工作区：
 
 ```bash
-mkdir -p .claude/skills
-git clone https://github.com/therealXiaomanChu/ex-skill .claude/skills/create-ex
+git clone https://github.com/therealXiaomanChu/ex-skill
+cd ex-skill
 ```
 
-### 全局安装
-
-```bash
-git clone https://github.com/therealXiaomanChu/ex-skill ~/.claude/skills/create-ex
-```
-
-### OpenClaw 安装
-
-```bash
-git clone https://github.com/therealXiaomanChu/ex-skill ~/.openclaw/workspace/skills/create-ex
-```
+根目录的 `SKILL.md` 是可读的 Agent Skill 定义；使用自然语言触发即可，不依赖
+特定提供商的目录、变量或 slash command。
 
 ---
 
@@ -30,7 +21,7 @@ git clone https://github.com/therealXiaomanChu/ex-skill ~/.openclaw/workspace/sk
 ### 基础依赖（可选）
 
 ```bash
-cd .claude/skills/create-ex  # 或你的安装路径
+cd ex-skill  # 或你的安装路径
 pip3 install -r requirements.txt
 ```
 
@@ -48,7 +39,7 @@ pip3 install -r requirements.txt
 1. 在微信中打开与前任的聊天窗口
 2. 手动选择并复制关键对话
 3. 粘贴到一个 txt 文件中
-4. 在 `/create-ex` 时使用方式 D（上传文件）
+4. 在创建 Skill 时使用“上传文件”方式
 
 ---
 

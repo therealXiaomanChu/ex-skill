@@ -2,7 +2,7 @@
 
 ## 产品定位
 
-前任.skill 是一个运行在 Claude Code 上的 meta-skill。
+前任.skill 是一个运行在 GitHub Copilot AgentSkills 环境中的 meta-skill。
 用户通过对话式交互提供原材料（聊天记录 + 照片 + 手动描述），系统自动生成一个可独立运行的前任 Persona Skill。
 
 ## 核心概念
@@ -39,7 +39,7 @@ Part A（Memory）补充：结合共同记忆，让回应更真实
 ## 用户旅程
 
 ```
-用户触发 /create-ex
+用户用自然语言请求创建 Skill
   ↓
 [Step 1] 基础信息录入（3个问题，除花名外均可跳过）
   - 花名/代号
@@ -96,11 +96,11 @@ Part A（Memory）补充：结合共同记忆，让回应更真实
 exes/
   └── {slug}/
       ├── SKILL.md          # 完整组合版，可直接运行
-      │                     # 触发词: /{slug}
+      │                     # 触发方式: Copilot Skill 选择或自然语言
       ├── memory.md         # Part A：关系记忆
-      │                     # 触发词: /{slug}-memory
+      │                     # 触发方式: 回忆相关自然语言请求
       ├── persona.md        # Part B：人物性格
-      │                     # 触发词: /{slug}-persona
+      │                     # 触发方式: 性格分析相关自然语言请求
       ├── meta.json         # 元信息
       ├── versions/         # 历史版本存档
       └── memories/         # 原始材料存放

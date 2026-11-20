@@ -2,7 +2,8 @@
 """社交媒体内容解析器
 
 解析朋友圈、微博、小红书、Instagram 等社交媒体截图或导出文件。
-截图通过 Claude 的 Read 工具直接读取（支持图片），本工具处理文本导出。
+图片内容由当前 Agent 主机提供的文件/图片读取能力处理；本工具只扫描本地
+目录并处理文本导出，不依赖特定 Agent 或工具名称。
 
 Usage:
     python3 social_parser.py --dir <screenshot_dir> --output <output_path>
@@ -59,7 +60,7 @@ def main():
         f.write(f"- 其他文件：{len(files['other'])} 个\n\n")
         
         if files['images']:
-            f.write("## 图片列表（需用 Read 工具逐一查看）\n")
+            f.write("## 图片列表（请用当前 Agent 主机的图片读取能力逐一查看）\n")
             for img in sorted(files['images']):
                 f.write(f"- {img}\n")
             f.write("\n")
@@ -76,7 +77,7 @@ def main():
                     f.write(f"读取失败：{e}\n")
     
     print(f"扫描完成，结果已写入 {args.output}")
-    print(f"提示：图片截图需使用 Read 工具查看，本工具仅列出文件路径")
+    print("提示：图片截图需使用当前 Agent 主机的图片读取能力查看，本工具仅列出文件路径")
 
 
 if __name__ == '__main__':
